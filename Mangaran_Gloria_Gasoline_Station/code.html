@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FuelSys Pro Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Poppins,sans-serif;
+background:#081028;
+color:#fff;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+background:#111c44;
+padding:20px;
+position:fixed;
+height:100vh;
+overflow-y:auto;
+}
+
+.logo{
+font-size:30px;
+font-weight:700;
+color:#38bdf8;
+margin-bottom:30px;
+}
+
+.nav button{
+width:100%;
+margin:8px 0;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#1e293b;
+color:#fff;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.nav button:hover{
+background:#38bdf8;
+color:#000;
+}
+
+/* MAIN */
+
+.main{
+margin-left:260px;
+padding:25px;
+width:calc(100% - 260px);
+}
+
+.section{
+display:none;
+animation:fade .3s ease;
+}
+
+.section.active{
+display:block;
+}
+
+@keyframes fade{
+from{opacity:0}
+to{opacity:1}
+}
+
+/* CARDS */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+}
+
+.card{
+background:#16213e;
+padding:20px;
+border-radius:18px;
+border-left:5px solid #38bdf8;
+box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+.card h3{
+font-size:15px;
+font-weight:500;
+color:#cbd5e1;
+margin-bottom:10px;
+}
+
+.card h2{
+font-size:28px;
+}
+
+.kri{
+border-left-color:#ef4444;
+}
+
+/* CHARTS */
+
+.chartbox{
+background:#16213e;
+padding:20px;
+border-radius:18px;
+margin-top:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* FORMS */
+
+input,select{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-top:8px;
+background:#0f172a;
+color:#fff;
+}
+
+.btn{
+background:#38bdf8;
+color:#000;
+font-weight:700;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-top:15px;
+transition:.3s;
+}
+
+.btn:hover{
+opacity:.8;
+}
+
+/* TANKS */
+
+.tank{
+background:#16213e;
+padding:20px;
+border-radius:18px;
+}
+
+.bar{
+height:30px;
+background:#334155;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.fill{
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:12px;
+font-weight:700;
+color:#fff;
+}
+
+.gasoline{
+background:#ef4444;
+}
+
+.diesel{
+background:#3b82f6;
+}
+
+/* TABLES */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#16213e;
+border-radius:12px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #334155;
+text-align:left;
+}
+
+th{
+background:#1e293b;
+}
+
+/* ALERTS */
+
+.alert{
+padding:15px;
+border-radius:12px;
+margin-top:10px;
+font-weight:600;
+}
+
+.warning{
+background:#7f1d1d;
+}
+
+.safe{
+background:#14532d;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.row{
+grid-template-columns:1fr;
+}
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.container{
+display:block;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="logo">⛽ FuelSys Pro</div>
+
+<div class="nav">
+<button onclick="showSection('dashboard')">Dashboard</button>
+<button onclick="showSection('sales')">Sales</button>
+<button onclick="showSection('inventory')">Inventory</button>
+<button onclick="showSection('deliveries')">Deliveries</button>
+<button onclick="showSection('credits')">Customer Credits</button>
+<button onclick="showSection('reports')">Reports</button>
+<button onclick="showSection('settings')">Settings</button>
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" class="section active">
+
+<h1>Fuel Station Dashboard</h1>
+<br>
+
+<div class="grid">
+
+<div class="card">
+<h3>Daily Sales</h3>
+<h2>₱12,179</h2>
+</div>
+
+<div class="card">
+<h3>Monthly Sales</h3>
+<h2>₱325,000</h2>
+</div>
+
+<div class="card">
+<h3>Gasoline Volume</h3>
+<h2>198L</h2>
+</div>
+
+<div class="card">
+<h3>Diesel Volume</h3>
+<h2>59L</h2>
+</div>
+
+<div class="card">
+<h3>Cash Accuracy</h3>
+<h2>98%</h2>
+</div>
+
+<div class="card">
+<h3>Inventory Accuracy</h3>
+<h2>97%</h2>
+</div>
+
+</div>
+
+<!-- CHARTS -->
+
+<div class="row">
+
+<div class="chartbox">
+<canvas id="salesChart"></canvas>
+</div>
+
+<div class="chartbox">
+<canvas id="fuelChart"></canvas>
+</div>
+
+</div>
+
+<!-- FUEL TANKS -->
+
+<h2 style="margin-top:25px">Fuel Tank Levels</h2>
+<br>
+
+<div class="row">
+
+<div class="tank">
+<h3>Gasoline Tank</h3>
+
+<div class="bar">
+<div class="fill gasoline" style="width:74%">
+74%
+</div>
+</div>
+
+<p style="margin-top:10px">74 / 100 Liters Remaining</p>
+
+</div>
+
+<div class="tank">
+
+<h3>Diesel Tank</h3>
+
+<div class="bar">
+<div class="fill diesel" style="width:71%">
+71%
+</div>
+</div>
+
+<p style="margin-top:10px">71 / 100 Liters Remaining</p>
+
+</div>
+
+</div>
+
+<!-- ALERTS -->
+
+<h2 style="margin-top:25px">Risk Alerts</h2>
+<br>
+
+<div class="grid">
+
+<div class="card kri">
+⚠ Low Fuel Stock Warning
+</div>
+
+<div class="card kri">
+✅ No Cash Shortage
+</div>
+
+<div class="card kri">
+📈 Revenue Stable
+</div>
+
+<div class="card kri">
+⚠ Manual Encoding Errors Moderate
+</div>
+
+</div>
+
+</div>
+
+<!-- SALES -->
+
+<div id="sales" class="section">
+
+<h1>Sales Management</h1>
+<br>
+
+<div class="card">
+
+<label>Fuel Type</label>
+<select>
+<option>Gasoline</option>
+<option>Diesel</option>
+</select>
+
+<label>Liters Sold</label>
+<input type="number" placeholder="Enter liters">
+
+<label>Amount</label>
+<input type="number" placeholder="Enter amount">
+
+<button class="btn">
+Record Sale
+</button>
+
+</div>
+
+</div>
+
+<!-- INVENTORY -->
+
+<div id="inventory" class="section">
+
+<h1>Inventory Dashboard</h1>
+<br>
+
+<!-- INVENTORY CARDS -->
+
+<div class="grid">
+
+<div class="card">
+<h3>Remaining Gasoline</h3>
+<h2>740L</h2>
+<p style="color:#22c55e;margin-top:8px">
+Stock Level Normal
+</p>
+</div>
+
+<div class="card">
+<h3>Remaining Diesel</h3>
+<h2>710L</h2>
+<p style="color:#22c55e;margin-top:8px">
+Inventory Stable
+</p>
+</div>
+
+<div class="card">
+<h3>Total Fuel Consumption</h3>
+<h2>257L</h2>
+<p style="color:#facc15;margin-top:8px">
+Daily Consumption
+</p>
+</div>
+
+<div class="card">
+<h3>Inventory Accuracy</h3>
+<h2>97%</h2>
+<p style="color:#38bdf8;margin-top:8px">
+Verified Monitoring
+</p>
+</div>
+
+</div>
+
+<!-- INVENTORY DASHBOARD ROW -->
+
+<div class="row">
+
+<!-- GASOLINE -->
+
+<div class="chartbox">
+
+<h2 style="margin-bottom:20px">
+Gasoline Tank Monitoring
+</h2>
+
+<div class="tank">
+
+<div style="display:flex;justify-content:space-between">
+<h3>Tank Capacity</h3>
+<h3>74%</h3>
+</div>
+
+<div class="bar">
+
+<div class="fill gasoline" style="width:74%">
+74%
+</div>
+
+</div>
+
+<p style="margin-top:12px;color:#cbd5e1">
+740 / 1000 Liters Remaining
+</p>
+
+<br>
+
+<table>
+
+<tr>
+<th>Reading</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Opening Reading</td>
+<td>310876</td>
+</tr>
+
+<tr>
+<td>Closing Reading</td>
+<td>312874</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- DIESEL -->
+
+<div class="chartbox">
+
+<h2 style="margin-bottom:20px">
+Diesel Tank Monitoring
+</h2>
+
+<div class="tank">
+
+<div style="display:flex;justify-content:space-between">
+<h3>Tank Capacity</h3>
+<h3>71%</h3>
+</div>
+
+<div class="bar">
+
+<div class="fill diesel" style="width:71%">
+71%
+</div>
+
+</div>
+
+<p style="margin-top:12px;color:#cbd5e1">
+710 / 1000 Liters Remaining
+</p>
+
+<br>
+
+<table>
+
+<tr>
+<th>Reading</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Opening Reading</td>
+<td>80641</td>
+</tr>
+
+<tr>
+<td>Closing Reading</td>
+<td>80725</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- INVENTORY ALERTS -->
+
+<h2 style="margin-top:25px">
+Inventory Alerts
+</h2>
+
+<br>
+
+<div class="grid">
+
+<div class="card kri">
+⚠ Gasoline nearing reorder level
+</div>
+
+<div class="card kri">
+⚠ Fuel consumption increased this week
+</div>
+
+<div class="card kri">
+✅ Inventory monitoring stable
+</div>
+
+<div class="card kri">
+✅ No fuel leakage detected
+</div>
+
+</div>
+
+</div>
+
+<!-- CREDITS -->
+
+<div id="credits" class="section">
+
+<h1>Customer Credits</h1>
+<br>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Balance</th>
+</tr>
+
+<tr>
+<td>Juan Dela Cruz</td>
+<td>₱2,500</td>
+</tr>
+
+<tr>
+<td>Pedro Santos</td>
+<td>₱1,850</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- REPORTS -->
+
+<div id="reports" class="section">
+
+<h1>Reports</h1>
+<br>
+
+<button class="btn">
+Generate Daily Report
+</button>
+
+<button class="btn">
+Generate Monthly Report
+</button>
+
+</div>
+
+<!-- SETTINGS -->
+
+<div id="settings" class="section">
+
+<h1>Settings</h1>
+<br>
+
+<div class="card">
+
+<label>Gasoline Price</label>
+<input value="65">
+
+<label>Diesel Price</label>
+<input value="60">
+
+<button class="btn">
+Save Settings
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+function showSection(id){
+
+document.querySelectorAll('.section')
+.forEach(section=>{
+section.classList.remove('active');
+});
+
+document.getElementById(id)
+.classList.add('active');
+
+}
+
+/* SALES CHART */
+
+new Chart(document.getElementById('salesChart'), {
+
+type:'line',
+
+data:{
+labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+
+datasets:[{
+label:'Sales Revenue',
+
+data:[12000,15000,13000,18000,17000,21000,25000],
+
+borderColor:'#38bdf8',
+
+backgroundColor:'rgba(56,189,248,.2)',
+
+fill:true,
+
+tension:.4,
+
+pointBackgroundColor:'#38bdf8',
+
+pointBorderColor:'#ffffff',
+
+pointRadius:5,
+
+pointHoverRadius:10,
+
+pointHoverBackgroundColor:'#ef4444',
+
+pointHoverBorderColor:'#ffffff',
+
+pointHoverBorderWidth:3
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+interaction:{
+mode:'nearest',
+intersect:false
+},
+
+plugins:{
+
+legend:{
+labels:{
+color:'#fff'
+}
+},
+
+tooltip:{
+
+backgroundColor:'#ef4444',
+
+titleColor:'#ffffff',
+
+bodyColor:'#ffffff',
+
+callbacks:{
+label:function(context){
+return ' ₱' + context.raw.toLocaleString();
+}
+}
+
+}
+
+},
+
+scales:{
+
+x:{
+ticks:{
+color:'#fff'
+}
+},
+
+y:{
+ticks:{
+color:'#fff',
+
+callback:function(value){
+return '₱' + value.toLocaleString();
+}
+}
+}
+
+}
+
+}
+
+});
+
+/* FUEL CHART */
+
+new Chart(document.getElementById('fuelChart'), {
+
+type:'bar',
+
+data:{
+labels:['Gasoline','Diesel'],
+
+datasets:[{
+
+label:'Liters Sold',
+
+data:[198,59],
+
+backgroundColor:[
+'#ef4444',
+'#3b82f6'
+],
+
+hoverBackgroundColor:[
+'#b91c1c',
+'#1d4ed8'
+],
+
+borderRadius:10
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+labels:{
+color:'#fff'
+}
+},
+
+tooltip:{
+
+backgroundColor:'#ef4444',
+
+titleColor:'#fff',
+
+bodyColor:'#fff',
+
+callbacks:{
+label:function(context){
+
+if(context.label === 'Gasoline'){
+return ' ₱12,870';
+}
+
+if(context.label === 'Diesel'){
+return ' ₱3,540';
+}
+
+}
+}
+
+}
+
+},
+
+scales:{
+
+x:{
+ticks:{
+color:'#fff'
+}
+},
+
+y:{
+ticks:{
+color:'#fff'
+}
+}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
